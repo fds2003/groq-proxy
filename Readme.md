@@ -176,7 +176,24 @@ for chunk in stream:
 
 ### 场景一：接入扣子（Coze）工作流
 
-在扣子工作流中使用代码节点调用 Groq 代理，实现 0 Token 白嫖算力：
+在扣子工作流中使用代码节点调用 Groq 代理，实现 0 Token 白嫖算力。
+
+**可选模型**（代码中 `model` 字段填以下值）：
+
+| 模型 ID | 说明 | 推荐场景 |
+|---------|------|---------|
+| `llama-3.3-70b-versatile` | 70B 通用大模型 | 通用对话、复杂推理 |
+| `llama-3.1-8b-instant` | 8B 轻量模型 | 简单任务、快速响应 |
+| `qwen/qwen3-32b` | 32B 中文模型 | 中文对话、thinking 推理 |
+| `meta-llama/llama-4-scout-17b-16e-instruct` | Llama 4 MoE 模型 | 多语言任务 |
+| `openai/gpt-oss-20b` | OpenAI 开源模型 | 需要 reasoning 的任务 |
+| `openai/gpt-oss-120b` | OpenAI 开源大模型 | 复杂推理、高质量输出 |
+| `allam-2-7b` | 7B 阿拉伯语模型 | 阿拉伯语场景 |
+| `whisper-large-v3` | 语音转文字 | 语音输入场景 |
+
+> 旧模型（`llama3-8b-8192`、`llama3-70b-8192`、`mixtral-8x7b-32768`、`gemma2-9b-it`）已全部下线，请勿使用。
+
+**代码示例**：
 
 ```javascript
 async function main({ params }): Promise<Output> {
@@ -230,7 +247,7 @@ async function main({ params }): Promise<Output> {
 2. 设置中选择 OpenAI 作为翻译服务
 3. 填入：
    - API Key：你的 Groq API Key
-   - 模型：`llama-3.3-70b-versatile`
+   - 模型：`llama-3.3-70b-versatile`（推荐）或 `llama-3.1-8b-instant`（更快）
    - API 地址：`https://你的代理地址/openai/v1/chat/completions`
 4. 建议设置为鼠标悬停翻译，避免请求过多触发限额
 
