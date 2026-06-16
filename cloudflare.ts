@@ -1,24 +1,23 @@
-//copy this to cloudflare workers
-export default {
-  async fetch(request, env) {
-    try {
-      const OPENAI_API_HOST = "api.groq.com";
-      const oldUrl = new URL(request.url);
+const OPENAI_API_HOST = "api.groq.com";
 
-      if (oldUrl.pathname === "/") {
-        return new Response(`https://${oldUrl.hostname}/openai/v1`, { status: 200 });
+export default {
+  async fetch(request) {
+    try {
+      const url = new URL(request.url);
+
+      if (url.pathname === "/") {
+        return new Response(`${url.origin}/openai/v1`, { status: 200 });
       }
 
-      const newUrl = new URL(request.url);
-      newUrl.hostname = OPENAI_API_HOST;
+      url.host = OPENAI_API_HOST;
 
-      const modifiedRequest = new Request(newUrl, {
+      const newRequest = new Request(url.toString(), {
         method: request.method,
         headers: request.headers,
         body: request.body,
       });
 
-      return await fetch(modifiedRequest);
+      return await fetch(newRequest);
     } catch (e) {
       return new Response(e.stack, { status: 500 });
     }
